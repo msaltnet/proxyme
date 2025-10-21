@@ -4,7 +4,7 @@
 
 AI Agent가 인간을 대신해서 일하는 세상이 오게 될 것이다. 나는 그걸 실현하는 사람이다. 좋다. 나부터 대신하는 Agent 만들자. 마치, 지킬박사와 하이드처럼.
 
-I guess AI agents will end up doing people’s jobs. It’s one of my responsibilities anyway. So, here we go, let’s make an agent to stand in for me, just like Dr. Jekyll did on himself.
+I guess AI agents will end up doing people's jobs. It's one of my responsibilities anyway. So, here we go, let's make an agent to stand in for me, just like Dr. Jekyll did on himself.
 
 - [Mandatory] Web GUI
 - [Mandatory] proxyme agent
@@ -42,3 +42,10 @@ I guess AI agents will end up doing people’s jobs. It’s one of my responsibi
 
 ### 스마트 분류 기능 (email category agent)
 - 메일 내용 분석에 기반한 분류
+
+## 서비스 구성
+
+### pop3service
+POP3를 통해 이메일을 받아와서 데이터베이스에 저장하는 서비스입니다.
+
+자세한 내용은 [pop3service/README.md](pop3service/README.md)를 참조하세요.
