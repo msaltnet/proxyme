@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  chatbot:
+    build: .
+    container_name: proxyme-chatbot
+    ports:
+      - "8501:8501"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - LLM_MODEL=${LLM_MODEL:-gpt-3.5-turbo}
+      - LLM_MAX_TOKENS=${LLM_MAX_TOKENS:-1000}
+      - LLM_TEMPERATURE=${LLM_TEMPERATURE:-0.7}
+      - SYSTEM_PROMPT=${SYSTEM_PROMPT:-당신은 ProxyMe라는 도움이 되는 AI 어시스턴트입니다.}
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - proxyme-network
+
+networks:
+  proxyme-network:
+    driver: bridge

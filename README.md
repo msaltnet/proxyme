@@ -49,3 +49,7 @@ I guess AI agents will end up doing people's jobs. It's one of my responsibiliti
 POP3를 통해 이메일을 받아와서 데이터베이스에 저장하는 서비스입니다.
 
 자세한 내용은 [pop3service/README.md](pop3service/README.md)를 참조하세요.
+
+## 설치
+
+### pop3service
