@@ -160,7 +160,7 @@
             try {
                 const response = await fetch('/api/statistics');
                 const stats = await response.json();
-                
+
                 document.getElementById('total-emails').textContent = stats.total_emails || 0;
                 document.getElementById('unread-emails').textContent = stats.unread_emails || 0;
                 document.getElementById('processed-emails').textContent = stats.processed_emails || 0;
@@ -178,7 +178,7 @@
             try {
                 const response = await fetch('/api/emails?limit=20');
                 const data = await response.json();
-                
+
                 if (data.emails && data.emails.length > 0) {
                     displayEmails(data.emails);
                 } else {
@@ -198,7 +198,7 @@
             emails.forEach(email => {
                 const isUnread = !email.is_read;
                 const cardClass = isUnread ? 'email-card unread' : 'email-card';
-                
+
                 html += `
                     <div class="card ${cardClass}" onclick="showEmailDetail(${email.id})">
                         <div class="card-body">
@@ -233,17 +233,17 @@
         // 이메일 상세 보기
         async function showEmailDetail(emailId) {
             currentEmailId = emailId;
-            
+
             try {
                 const response = await fetch(`/api/emails/${emailId}`);
                 const email = await response.json();
-                
+
                 const modalTitle = document.getElementById('emailModalTitle');
                 const modalBody = document.getElementById('emailModalBody');
                 const markReadBtn = document.getElementById('markReadBtn');
-                
+
                 modalTitle.textContent = email.subject || '(제목 없음)';
-                
+
                 modalBody.innerHTML = `
                     <div class="mb-3">
                         <strong>발신자:</strong> ${email.sender}<br>
@@ -259,12 +259,12 @@
                         </div>
                     </div>
                 `;
-                
+
                 markReadBtn.style.display = email.is_read ? 'none' : 'inline-block';
-                
+
                 const modal = new bootstrap.Modal(document.getElementById('emailModal'));
                 modal.show();
-                
+
             } catch (error) {
                 console.error('이메일 상세 로드 실패:', error);
                 alert('이메일을 불러오는데 실패했습니다.');
@@ -274,12 +274,12 @@
         // 읽음 표시
         async function markAsRead() {
             if (!currentEmailId) return;
-            
+
             try {
                 const response = await fetch(`/api/emails/${currentEmailId}/read`, {
                     method: 'POST'
                 });
-                
+
                 if (response.ok) {
                     loadEmails();
                     loadStatistics();
@@ -297,10 +297,10 @@
         async function syncEmails() {
             const button = event.target;
             const originalText = button.innerHTML;
-            
+
             button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 동기화 중...';
             button.disabled = true;
-            
+
             try {
                 const response = await fetch('/api/sync', {
                     method: 'POST',
@@ -311,9 +311,9 @@
                         delete_from_server: false
                     })
                 });
-                
+
                 const result = await response.json();
-                
+
                 if (response.ok) {
                     alert(`동기화 완료!\n새 메시지: ${result.new_messages}개\n업데이트: ${result.updated_messages}개`);
                     loadEmails();

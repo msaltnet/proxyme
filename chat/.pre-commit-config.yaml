@@ -1,0 +1,30 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      - id: trailing-whitespace
+        files: ^chat/
+      - id: end-of-file-fixer
+        files: ^chat/
+      - id: check-yaml
+        files: ^chat/
+      - id: check-added-large-files
+        files: ^chat/
+      - id: check-merge-conflict
+        files: ^chat/
+      - id: debug-statements
+        files: ^chat/
+
+  - repo: https://github.com/psf/black
+    rev: 23.7.0
+    hooks:
+      - id: black
+        files: ^chat/
+        language_version: python3
+
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+        files: ^chat/
+        args: ["--profile", "black"]

@@ -61,7 +61,7 @@ streamlit run app.py
 ```python
 # 여러 모델로 동시 응답
 responses = llm_service.get_multiple_responses(
-    "안녕하세요!", 
+    "안녕하세요!",
     models=["gpt-3.5-turbo", "llama-2", "mistral-7b"]
 )
 ```

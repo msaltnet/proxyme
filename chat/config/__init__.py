@@ -4,4 +4,4 @@
 
 from .settings import ChatBotConfig
 
-__all__ = ['ChatBotConfig']
+__all__ = ["ChatBotConfig"]

@@ -4,4 +4,4 @@
 
 from .processors import InputProcessor, ResponseFormatter
 
-__all__ = ['InputProcessor', 'ResponseFormatter']
+__all__ = ["InputProcessor", "ResponseFormatter"]

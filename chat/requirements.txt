@@ -1,3 +1,9 @@
 streamlit>=1.28.0
 litellm>=1.0.0
 python-dotenv>=1.0.0
+
+# 개발 도구
+black>=23.0.0
+flake8>=6.0.0
+isort>=5.12.0
+pre-commit>=3.0.0
