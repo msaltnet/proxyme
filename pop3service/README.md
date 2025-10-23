@@ -29,13 +29,14 @@ docker-compose up -d
 
 ### 방법 2: 로컬 설치
 
-1. Python 3.9+ 설치
+1. Python 3.9+ 설치 (권장: Python 3.11+)
 2. PostgreSQL 설치 및 데이터베이스 생성
 ```bash
 createdb proxyme_email
 ```
-2-1. 또는 도커로 실행
-```
+
+또는 도커로 실행
+```bash
 # PostgreSQL 컨테이너 직접 실행
 docker run -d \
   --name proxyme-postgres \
@@ -57,6 +58,12 @@ venv\Scripts\activate     # Windows
 
 # 의존성 설치
 pip install -r requirements.txt
+
+# 주요 패키지 버전:
+# Flask==3.1.2
+# Flask-Migrate==4.0.5
+# Flask-SQLAlchemy==3.0.5
+# psycopg2-binary==2.9.11
 ```
 
 4. 환경 변수 설정
@@ -67,27 +74,15 @@ cp env.example .env
 
 5. 데이터베이스 마이그레이션
 ```bash
-python manage.py db init
-python manage.py db migrate -m "Initial migration"
-python manage.py db upgrade
+# Flask CLI 방식 (권장)
+python -m flask db init
+python -m flask db migrate -m "Initial migration"
+python -m flask db upgrade
 ```
 
 6. 서비스 실행
 ```bash
 python app.py
-```
-
-### 방법 3: 스크립트 사용
-
-Windows:
-```bash
-start.bat
-```
-
-Linux/Mac:
-```bash
-chmod +x start.sh
-./start.sh
 ```
 
 ## 설정
@@ -141,6 +136,31 @@ Gmail을 사용하는 경우:
 
 ## 개발
 
+### Flask-Migrate 사용법
+
+**Flask-Migrate 4.0.5에서는 Flask CLI 방식을 사용합니다:**
+
+```bash
+# 마이그레이션 초기화 (최초 1회만)
+python -m flask db init
+
+# 새 마이그레이션 생성
+python -m flask db migrate -m "마이그레이션 설명"
+
+# 마이그레이션 적용
+python -m flask db upgrade
+
+# 마이그레이션 히스토리 확인
+python -m flask db history
+
+# 특정 버전으로 되돌리기
+python -m flask db downgrade <revision>
+```
+
+**주의사항:**
+- `python manage.py db` 명령어는 Flask-Migrate 4.0.5에서 더 이상 지원되지 않습니다
+- `manage.py`는 Flask 앱 실행용으로만 사용됩니다
+
 ### 프로젝트 구조
 ```
 pop3service/
@@ -170,6 +190,22 @@ pop3service/
 1. **데이터베이스 연결 실패**
    - PostgreSQL 서비스가 실행 중인지 확인
    - DATABASE_URL 설정 확인
+
+   netstat -an | findstr :5432
+   ```
+
+   **Python으로 연결 테스트:**
+   ```python
+   import psycopg2
+   conn = psycopg2.connect(host='localhost', port=5432, user='proxyme_user', password='proxyme_password', database='proxyme_email')
+   ```
+
+   **Flask 앱 실행 테스트:**
+   ```bash
+   python manage.py
+   # 또는
+   python app.py
+   ```
 
 2. **POP3 연결 실패**
    - POP3 서버 설정 확인

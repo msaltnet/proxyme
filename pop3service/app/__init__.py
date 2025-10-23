@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 def create_app(config_name='default'):
     """Flask 애플리케이션 팩토리"""
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder='../templates', static_folder='../static')
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
     
@@ -21,7 +21,7 @@ def create_app(config_name='default'):
     # 데이터베이스 초기화
     init_db(app)
     
-    # 이메일 서비스 초기화
+    # 이메일 서비스 초기화 (설정 객체 전달)
     email_service = EmailService(app.config)
     
     @app.route('/')

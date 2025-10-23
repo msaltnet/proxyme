@@ -1,6 +1,6 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.dialects.postgresql import JSON
+import json
 
 db = SQLAlchemy()
 
@@ -21,10 +21,10 @@ class Email(db.Model):
     body_html = db.Column(db.Text)
     
     # 첨부파일 정보
-    attachments = db.Column(JSON)
+    attachments = db.Column(db.Text)  # JSON을 Text로 변경
     
     # 메타데이터
-    headers = db.Column(JSON)
+    headers = db.Column(db.Text)  # JSON을 Text로 변경
     size = db.Column(db.Integer)
     
     # 처리 상태
@@ -50,8 +50,8 @@ class Email(db.Model):
             'date_sent': self.date_sent.isoformat() if self.date_sent else None,
             'body_text': self.body_text,
             'body_html': self.body_html,
-            'attachments': self.attachments,
-            'headers': self.headers,
+            'attachments': json.loads(self.attachments) if self.attachments else None,
+            'headers': json.loads(self.headers) if self.headers else None,
             'size': self.size,
             'is_read': self.is_read,
             'is_processed': self.is_processed,
@@ -66,7 +66,7 @@ class EmailThread(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     thread_id = db.Column(db.String(255), unique=True, nullable=False, index=True)
     subject = db.Column(db.Text)
-    participants = db.Column(JSON)  # 참여자 목록
+    participants = db.Column(db.Text)  # 참여자 목록 (JSON을 Text로 변경)
     email_count = db.Column(db.Integer, default=0)
     
     # 생성/수정 시간
@@ -112,7 +112,7 @@ class EmailSummary(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email_id = db.Column(db.Integer, db.ForeignKey('emails.id'), nullable=False)
     summary = db.Column(db.Text)
-    keywords = db.Column(JSON)  # 키워드 목록
+    keywords = db.Column(db.Text)  # 키워드 목록 (JSON을 Text로 변경)
     sentiment = db.Column(db.String(50))  # 감정 분석 결과
     
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

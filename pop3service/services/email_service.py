@@ -10,14 +10,14 @@ logger = logging.getLogger(__name__)
 class EmailService:
     """이메일 서비스 클래스"""
     
-    def __init__(self, config: Config):
+    def __init__(self, config):
         self.config = config
         self.pop3_client = POP3Client(
-            host=config.POP3_HOST,
-            port=config.POP3_PORT,
-            username=config.POP3_USERNAME,
-            password=config.POP3_PASSWORD,
-            use_ssl=config.POP3_USE_SSL
+            host=config.get('POP3_HOST', 'pop.gmail.com'),
+            port=config.get('POP3_PORT', 995),
+            username=config.get('POP3_USERNAME', ''),
+            password=config.get('POP3_PASSWORD', ''),
+            use_ssl=config.get('POP3_USE_SSL', True)
         )
     
     def sync_emails(self, delete_from_server: bool = False) -> Dict:
