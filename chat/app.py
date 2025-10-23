@@ -30,7 +30,14 @@ st.set_page_config(
 
 class ChatBot:
     def __init__(self):
-        self.llm_service = LLMService()
+        # LLM 설정에서 필요한 값들 가져오기
+        llm_config = config.get("llm", {})
+        
+        # LiteLLM 서비스 초기화
+        self.llm_service = LLMService(
+            model=llm_config.get("model", "gpt-3.5-turbo")
+        )
+        
         self.input_processor = InputProcessor()
         self.response_formatter = ResponseFormatter()
         
@@ -175,9 +182,9 @@ def render_sidebar():
         # 대화 기록 정보
         st.subheader("📊 대화 정보")
         stats = get_conversation_stats(st.session_state.messages)
-        st.write(f"총 메시지: {stats['total']}")
-        st.write(f"사용자: {stats['user']}")
-        st.write(f"AI: {stats['assistant']}")
+        st.write(f"총 메시지: {stats['total_messages']}")
+        st.write(f"사용자: {stats['user_messages']}")
+        st.write(f"AI: {stats['assistant_messages']}")
         
         # LLM 설정 정보
         st.subheader("🤖 LLM 설정")
